@@ -3,24 +3,28 @@ PODS:
   - AlamofireObjectMapper (5.2.1):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
+  - iOSDropDown (0.3.4)
   - ObjectMapper (3.5.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
   - AlamofireObjectMapper
+  - iOSDropDown
   - ObjectMapper
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireObjectMapper
+    - iOSDropDown
     - ObjectMapper
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
+  iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
 
-PODFILE CHECKSUM: 980d3563aae13f3ad260f9a1cee7ef47b1e5440c
+PODFILE CHECKSUM: 2f219c42b65090bb5afa195571514458a11c0e98
 
 COCOAPODS: 1.8.4

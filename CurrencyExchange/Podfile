@@ -10,6 +10,7 @@ target 'CurrencyExchange' do
   pod 'AlamofireObjectMapper'
   pod 'Alamofire', '~> 4.4'
   pod 'ObjectMapper'
+  pod 'iOSDropDown'
    
   target 'CurrencyExchangeTests' do
     inherit! :search_paths

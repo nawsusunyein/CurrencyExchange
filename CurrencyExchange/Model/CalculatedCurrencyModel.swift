@@ -10,10 +10,10 @@ import Foundation
 class CalculatedCurrencyModel{
     
     var type : String?
-    var oneUnitValue : Float?
-    var enteredUnitValue : Float?
+    var oneUnitValue : Double?
+    var enteredUnitValue : Double?
     
-    init(type:String,oneUnitValue:Float,enteredUnitValue:Float){
+    init(type:String,oneUnitValue:Double,enteredUnitValue:Double){
         self.type = type
         self.oneUnitValue = oneUnitValue
         self.enteredUnitValue = enteredUnitValue

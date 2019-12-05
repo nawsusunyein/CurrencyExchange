@@ -16,7 +16,7 @@ class CurrencyList : Mappable{
     var privacy : String?
     var timestamp : Double?
     var source : String?
-    var quotes : [String : Float]?
+    var quotes : [String : Double]?
     
     init?(){}
     required init?(map: Map) {
