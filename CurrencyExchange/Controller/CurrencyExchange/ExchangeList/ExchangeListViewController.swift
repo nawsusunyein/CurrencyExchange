@@ -101,6 +101,7 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
         self.currencyListTable.delegate = self
         
         self.txtEnteredAmount.delegate = self
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 109/255, green: 237/255, blue: 237/255, alpha: 0.7)
         
         self.currencyListTable.rowHeight = UITableView.automaticDimension
         self.currencyListTable.estimatedRowHeight = UITableView.automaticDimension

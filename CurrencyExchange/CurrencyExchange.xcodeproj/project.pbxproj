@@ -60,7 +60,7 @@
 		0AF784261928A0F8D89C48CE /* Pods_CurrencyExchangeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CurrencyExchangeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C58BB32B880CFEE707FE36E /* Pods-CurrencyExchange-CurrencyExchangeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CurrencyExchange-CurrencyExchangeUITests.release.xcconfig"; path = "Target Support Files/Pods-CurrencyExchange-CurrencyExchangeUITests/Pods-CurrencyExchange-CurrencyExchangeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1CA9EB544BB9FCD40F9B016E /* Pods_CurrencyExchange_CurrencyExchangeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CurrencyExchange_CurrencyExchangeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A02EC1A2396B2CC005C5309 /* CurrencyExchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyExchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A02EC1A2396B2CC005C5309 /* 為替相場.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "為替相場.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A02EC1D2396B2CC005C5309 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A02EC212396B2CC005C5309 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6A02EC242396B2CC005C5309 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 		6A02EC1B2396B2CC005C5309 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6A02EC1A2396B2CC005C5309 /* CurrencyExchange.app */,
+				6A02EC1A2396B2CC005C5309 /* 為替相場.app */,
 				6A02EC302396B2CF005C5309 /* CurrencyExchangeTests.xctest */,
 				6A02EC3B2396B2CF005C5309 /* CurrencyExchangeUITests.xctest */,
 			);
@@ -314,7 +314,7 @@
 			);
 			name = CurrencyExchange;
 			productName = CurrencyExchange;
-			productReference = 6A02EC1A2396B2CC005C5309 /* CurrencyExchange.app */;
+			productReference = 6A02EC1A2396B2CC005C5309 /* 為替相場.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6A02EC2F2396B2CF005C5309 /* CurrencyExchangeTests */ = {
@@ -737,7 +737,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = SuSu.CurrencyExchange;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "為替相場";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -756,7 +756,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = SuSu.CurrencyExchange;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "為替相場";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
