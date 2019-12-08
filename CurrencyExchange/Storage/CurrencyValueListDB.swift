@@ -89,7 +89,6 @@ class CurrencyValueListDB {
                     print("\(self.CURRENCY_VALUE_LIST_TABLE) : Error binding : \(errmsg)")
                 }
                 
-                print("inserted successfully : Currency Type : \(currencyType), Currency Value : \(currencyValue), Currency Source : \(currencySource)")
                 if(sqlite3_step(stmt) == SQLITE_DONE){
                     print("\(self.CURRENCY_VALUE_LIST_TABLE) : Inserted successfully \(currencyType)")
                 }else{
@@ -124,7 +123,6 @@ class CurrencyValueListDB {
                 
                 let currencyType = String(cString:sqlite3_column_text(stmt, 0))
                 let currencyValue = sqlite3_column_double(stmt, 1)
-                let currencySource = String(cString: sqlite3_column_text(stmt, 2))
                 let currencyObj = CalculatedCurrencyModel.init(type: currencyType, oneUnitValue: currencyValue, enteredUnitValue: 0.0)
                 list?.append(currencyObj)
             }
