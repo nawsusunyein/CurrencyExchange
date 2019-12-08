@@ -51,7 +51,7 @@ class CurrencyValueListDB {
     }
     
 
-    func insertCurrencyList(_ currencyList : [CalculatedCurrencyModel],currencyType : String){
+    func insertCurrencyList(_ currencyList : [CalculatedCurrencyModel],currencyName : String){
         var stmt : OpaquePointer?
         for currency in currencyList{
             let queryString = "INSERT INTO \(CURRENCY_VALUE_LIST_TABLE)" +
@@ -68,7 +68,7 @@ class CurrencyValueListDB {
             }else{
                 let currencyType = currency.type! as NSString
                 let currencyValue = currency.oneUnitValue
-                let currencySource = currencyType as NSString
+                let currencySource = currencyName as NSString
                 
                 if(sqlite3_bind_text(stmt, 1, currencyType.utf8String, -1, nil) != SQLITE_OK){
                     let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -89,6 +89,7 @@ class CurrencyValueListDB {
                     print("\(self.CURRENCY_VALUE_LIST_TABLE) : Error binding : \(errmsg)")
                 }
                 
+                print("inserted successfully : Currency Type : \(currencyType), Currency Value : \(currencyValue), Currency Source : \(currencySource)")
                 if(sqlite3_step(stmt) == SQLITE_DONE){
                     print("\(self.CURRENCY_VALUE_LIST_TABLE) : Inserted successfully \(currencyType)")
                 }else{

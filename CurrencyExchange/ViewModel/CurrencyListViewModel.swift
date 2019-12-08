@@ -30,8 +30,10 @@ struct CurrencyListViewModel{
         let calculatedCurrencyListFromDB = self.currenyValueListDB.getCurrencyListByCurrencyType(currencyType!)
         if calculatedCurrencyListFromDB.count > 0{
             self.currenyValueListDB.deleteCurrencyListByCurrencyType(currencyType: self.currencyType!)
-            self.currenyValueListDB.insertCurrencyList(calculatedCurrencyList, currencyType: currencyType!)
+            self.currenyValueListDB.insertCurrencyList(calculatedCurrencyList, currencyName: currencyType!)
            
+        }else{
+            self.currenyValueListDB.insertCurrencyList(calculatedCurrencyList, currencyName: currencyType!)
         }
         
     }

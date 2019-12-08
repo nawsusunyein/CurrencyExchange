@@ -14,14 +14,17 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
     var apiService : ApiService = ApiService()
     private(set) var currencyListViewModel : CurrencyListViewModel?
     private(set) var currencyTypeListViewModel : CurrencyTypeViewModel?
+    private(set) var currencyLsitFromDbViewModel : CurrencyListFromDBViewModel?
     
     var currencyResultList : CurrencyList?{
         didSet{
             guard let currencyResultList =  currencyResultList else {
                 return
             }
-            currencyListViewModel = CurrencyListViewModel(currencyList: currencyResultList,enteredAmount: self.enteredAmount,currencyType:self.selectedCurrency)
-            self.currencyListTable.reloadData()
+           currencyListViewModel = CurrencyListViewModel(currencyList: currencyResultList,enteredAmount: self.enteredAmount,currencyType:self.selectedCurrency)
+        
+            self.setCurrencyListValueFromTwoViewModel()
+            
         }
     }
     
@@ -48,23 +51,52 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
         }
     }
     
+    var currencyListFromDB : [CalculatedCurrencyModel]?{
+        didSet{
+            guard let currencyListFromDB = currencyListFromDB else{
+                return
+            }
+            if(self.currencyListFromDB!.count > 0){
+                currencyLsitFromDbViewModel = CurrencyListFromDBViewModel(currencyListFromDb: currencyListFromDB, enteredAmount: self.enteredAmount, currencyType: self.selectedCurrency)
+                self.setCurrencyListValueFromTwoViewModel()
+            }else{
+                self.isFromDbResult = false
+                self.getCurrencyList(source: self.selectedCurrency,isFindingType: false)
+            }
+            
+            
+        }
+    }
+    
     private var currencyTypeListDB : CurrencyTypeListDB = CurrencyTypeListDB()
     private var currencyValueListDB : CurrencyValueListDB = CurrencyValueListDB()
     
     private var enteredAmount : Double = 0
     private var selectedCurrency : String = "USD"
+    private var selectedIndex : Int = 0
     private var isFirstTime : Bool = true
     private var startDateTime : Date = Date()
+    private var isFromDbResult : Bool = false
+    private var calculatedCurrencyValueList : [CalculatedCurrencyModel] = [CalculatedCurrencyModel]()
     
     @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var currencyListTable: UITableView!
     @IBOutlet weak var txtEnteredAmount: UITextField!
     @IBOutlet weak var currencyTypeDropDown: DropDown!
-    
     @IBOutlet weak var txtResult: UILabel!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
+    private var loadingWebIndicator : UIActivityIndicatorView!
+    
+    var loadingView : UIView!
+    var loadingWindow: UIWindow?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.loadingIndicator)
+        self.loadingIndicator.isHidden = true
+        self.loadingIndicator.stopAnimating()
+        
         self.currencyListTable.dataSource = self
         self.currencyListTable.delegate = self
         
@@ -97,32 +129,57 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
     }
     
     private func bindCurrencyTypes(_ currencyTypeList : [String]){
+        self.selectedIndex = currencyTypeList.firstIndex{$0 == "USD"}!
         currencyTypeDropDown.optionArray = currencyTypeList
         currencyTypeDropDown.didSelect{(selectedText,index,id) in
             self.selectedCurrency = selectedText
+            self.selectedIndex = index
         }
+        self.txtEnteredAmount.text = self.enteredAmount.description
+        currencyTypeDropDown.selectedIndex = self.selectedIndex
+        currencyTypeDropDown.text = self.selectedCurrency
+        
+    }
+    
+    private func setCurrencyListValueFromTwoViewModel(){
+       
+        if(self.isFromDbResult){
+            self.calculatedCurrencyValueList = self.currencyLsitFromDbViewModel!.calculatedCurrencyListFromDb
+        }else{
+            self.calculatedCurrencyValueList = self.currencyListViewModel!.calculatedCurrencyList
+        }
+        
+        self.currencyListTable.reloadData()
     }
     
     @IBAction func searchByCurrency(_ sender: Any) {
-        let enteredAmountString = self.txtEnteredAmount.text
-        if let doubleEnteredAmount = enteredAmountString?.doubleValue{
-            self.enteredAmount = doubleEnteredAmount
-        }else{
-            showErrorAlert(message: "Please enter integer or decimal value")
-            return
-        }
-        self.setResultValue()
-        let currentDateTime = Date()
-        let timeInterval = self.startDateTime.timeIntervalSince(currentDateTime)
-        let timeInteger = NSInteger(timeInterval)
-        let minutes = abs((timeInteger / 60) % 60)
         
-        if(minutes > 30){
-            self.getCurrencyList(source: self.selectedCurrency,isFindingType: false)
-        }else{
-            
+        let enteredAmountString = self.txtEnteredAmount.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+                       if let doubleEnteredAmount = enteredAmountString?.doubleValue{
+                           self.enteredAmount = doubleEnteredAmount
+                       }else{
+                           if !enteredAmountString!.isEmpty{
+                            self.showErrorAlert(message: "Please enter integer or decimal value")
+                               return
+                           }else{
+                               self.txtEnteredAmount.text = "0.0"
+                           }
+                           
+                       }
+                      
+                       self.setResultValue()
+                       let currentDateTime = Date()
+                       let timeInterval = self.startDateTime.timeIntervalSince(currentDateTime)
+                       let timeInteger = NSInteger(timeInterval)
+                       let minutes = abs((timeInteger / 60) % 60)
+                       
+                       if(minutes > 30){
+                           self.isFromDbResult = false
+                           self.getCurrencyList(source: self.selectedCurrency,isFindingType: false)
+                       }else{
+                           self.isFromDbResult = true
+                           self.currencyListFromDB = self.currencyValueListDB.getCurrencyListByCurrencyType(self.selectedCurrency)
         }
-       
         
     }
   
@@ -131,12 +188,19 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
     }
     private func showErrorAlert(message : String){
         let warningAlert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: {_ in})
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
+           
+        })
         warningAlert.addAction(okAction)
         self.present(warningAlert, animated: true, completion: nil)
     }
     
     private func getCurrencyList(source : String,isFindingType : Bool){
+        if(!NetworkChecker.isNetworkAvailable()){
+            self.showErrorAlert(message: "Open your network or connect Wi-fi to get latest info")
+            return
+        }
+        
         let headers = [
                  "Content-Type" : "application/json"
                ]
@@ -148,29 +212,38 @@ class ExchangeListViewController: UIViewController,UITextFieldDelegate{
                ]
                self.apiService.getLiveCurrencyList(headers:headers,parameters:parameters,success:{[] in
                    guard let currencyList = self.apiService.currencyList else {return}
-                if(isFindingType){
-                    self.currencyKeyValueList = self.apiService.currencyList?.quotes
+                if(currencyList.success!){
+                    if(isFindingType){
+                        self.currencyKeyValueList = self.apiService.currencyList?.quotes
+                    }else{
+                        self.currencyResultList = currencyList
+                    }
                 }else{
-                    self.currencyResultList = currencyList
+                    let message = "Error Code : \(currencyList.error!.code!.description) \n \(currencyList.error!.info!.description)"
+                    self.showErrorAlert(message: message)
                 }
-                   
-               },
-               failure:{[] in})
+            },
+               failure:{[] in
+                
+               })
     }
 
 }
 
 extension ExchangeListViewController : UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let currencyListViewModel = currencyListViewModel else{return 0}
-        return currencyListViewModel.calculatedCurrencyList.count
+        if self.calculatedCurrencyValueList.count > 0{
+            return self.calculatedCurrencyValueList.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeTableViewCell", for: indexPath) as! ExchangeTableViewCell
-        cell.lblCurrencyType.text = currencyListViewModel?.calculatedCurrencyList[indexPath.row].type
-        cell.lblCurrencyUnitValue.text = currencyListViewModel?.calculatedCurrencyList[indexPath.row].oneUnitValue?.description
-        cell.lblCurrencyEnteredAmountValue.text = currencyListViewModel?.calculatedCurrencyList[indexPath.row].enteredUnitValue?.description
+        cell.lblCurrencyType.text = self.calculatedCurrencyValueList[indexPath.row].type
+        cell.lblCurrencyUnitValue.text = self.calculatedCurrencyValueList[indexPath.row].oneUnitValue?.description
+        cell.lblCurrencyEnteredAmountValue.text = self.calculatedCurrencyValueList[indexPath.row].enteredUnitValue?.description
+    
         return cell
     }
     

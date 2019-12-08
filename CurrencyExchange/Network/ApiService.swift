@@ -11,11 +11,12 @@ import Alamofire
 import AlamofireObjectMapper
 
 class ApiService {
+    var LIVE_API = API.Host.BASE + API.EndPoint.LIVE + API.AccessKey.access_key
     
     var currencyList : CurrencyList?
     
     func getLiveCurrencyList(headers : HTTPHeaders? = nil, parameters : Parameters? = nil, success : @escaping() -> (), failure : @escaping() -> ()){
-        Alamofire.request("http://apilayer.net/api/live?access_key=0db6e628644d0e90a4062e77b6c7ea72",method: .post,parameters: parameters,encoding: JSONEncoding.default,headers: headers).responseObject{(response:DataResponse<CurrencyList>) in
+        Alamofire.request(LIVE_API,method: .post,parameters: parameters,encoding: JSONEncoding.default,headers: headers).responseObject{(response:DataResponse<CurrencyList>) in
             switch response.result{
             case .success(_) :
                 self.currencyList = response.result.value

@@ -13,6 +13,7 @@
                 <outlet property="btnSearch" destination="1wt-4F-8Ul" id="adY-c2-oqc"/>
                 <outlet property="currencyListTable" destination="Yme-le-wGL" id="Q80-nY-Qay"/>
                 <outlet property="currencyTypeDropDown" destination="nd4-Ak-OIx" id="s0t-Ei-SIy"/>
+                <outlet property="loadingIndicator" destination="e0e-IP-r85" id="RHq-gE-pQp"/>
                 <outlet property="txtEnteredAmount" destination="yC7-bb-bbd" id="Oh1-AN-If1"/>
                 <outlet property="txtResult" destination="nH4-nn-tnT" id="5pU-vW-mlS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -63,10 +64,15 @@
                         <action selector="searchByCurrency:" destination="-1" eventType="touchUpInside" id="wai-v2-emX"/>
                     </connections>
                 </button>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="e0e-IP-r85">
+                    <rect key="frame" x="197" y="438" width="20" height="20"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Yme-le-wGL" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="0.80000000000000004" id="49h-I6-88Z"/>
+                <constraint firstItem="e0e-IP-r85" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="5OV-NJ-pxP"/>
                 <constraint firstItem="Yme-le-wGL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5eO-ap-I7t"/>
                 <constraint firstItem="Yme-le-wGL" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6nO-HA-OhV"/>
                 <constraint firstItem="nd4-Ak-OIx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="FTh-yd-Szj"/>
@@ -80,10 +86,11 @@
                 <constraint firstItem="1wt-4F-8Ul" firstAttribute="top" secondItem="yC7-bb-bbd" secondAttribute="bottom" constant="8" id="raF-Ym-S5w"/>
                 <constraint firstItem="nd4-Ak-OIx" firstAttribute="top" secondItem="yC7-bb-bbd" secondAttribute="bottom" constant="8" id="tuI-Ru-Hvy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1wt-4F-8Ul" secondAttribute="trailing" constant="8" id="uhS-3p-EYk"/>
+                <constraint firstItem="e0e-IP-r85" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="xAn-Eh-ig3"/>
                 <constraint firstItem="yC7-bb-bbd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="xKc-Kd-66f"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="170" y="107"/>
+            <point key="canvasLocation" x="169.56521739130437" y="106.47321428571428"/>
         </view>
     </objects>
 </document>

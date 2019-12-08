@@ -17,6 +17,7 @@ class CurrencyList : Mappable{
     var timestamp : Double?
     var source : String?
     var quotes : [String : Double]?
+    var error : ErrorCodes?
     
     init?(){}
     required init?(map: Map) {
@@ -30,5 +31,6 @@ class CurrencyList : Mappable{
         timestamp <- map["timestamp"]
         source <- map["source"]
         quotes <- map["quotes"]
+        error <- map["error"]
     }
 }
